@@ -1,0 +1,140 @@
+    <div class="row" id="macro_app" >
+        <h1>Total daily energy expenditure(TDEE)</h1>
+            <div ng-controller="MacroTdeeCtrl">
+                <div ng-show="ready" class="row">
+                    <div class="row">
+                            <div class="col-md-2">
+                                Calculation method<a href="http://en.wikipedia.org/wiki/Basal_metabolic_rate" target="_blank">[1]:</a>
+                            </div>
+                            <div class="btn-group">
+                              <button type="button" class="btn btn-default" ng-repeat="bmr_method in bmr.methods" ng-click="set_bmr_method($index)">{{ bmr_method.name }}</button>
+                    </div>
+                    <hr>
+                    <div class="row">
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-12">
+                            <form class="form-horizontal" role="form" name="bodyForm">
+                            <div class="form-group">
+                                <label class="col-md-6 control-label">System of measurement</label>
+                                <div class="col-md-6 input-group">
+                                <select type="text" ng-model="systemOfMeasurement" class="form-control">
+                                    <option value="metric">Metric</option>
+                                    <option value="imperial">Imperial</option>
+                                </select>
+                                </div>
+                            </div>
+                            <div <div ng-show="(bmr.current_method_id==0)||(bmr.current_method_id==1)">
+                                <div class="form-group" ng-show="systemOfMeasurement=='metric'">
+                                    <label class="col-md-6 control-label">Weight</label>
+                                    <div class="col-md-6 input-group">
+                                        <input type="number" step="0.1" min="1" max="250" ng-model="body_data.weight" placeholder="kg" class="form-control" required smart-float>
+                                        <span class="input-group-addon">kg</span>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-show="systemOfMeasurement=='imperial'">
+                                    <label class="col-md-6 control-label">Weight</label>
+                                    <div class="col-md-6 input-group">
+                                        <input type="number" step="0.1" min="1" max="450" ng-model="body_data.weight_lbs" placeholder="lbs" class="form-control" required smart-float>
+                                        <span class="input-group-addon">lbs</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-show="bmr.current_method_id==0">
+                                <div class="form-group" ng-show="systemOfMeasurement=='metric'">
+                                    <label class="col-md-6 control-label">Height</label>
+                                    <div class="col-md-6 input-group">
+                                    <input type="number" min="1" max="220" step="0.1" ng-model="body_data.height" placeholder="sm" class="form-control" required smart-float>
+                                    <span class="input-group-addon">sm</span>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-show="systemOfMeasurement=='imperial'">
+                                    <label class="col-md-6 control-label">Height</label>
+                                    <div class="col-md-6 input-group">
+                                    <input type="number" min="1" max="220" step="0.1" ng-model="body_data.height_foots" placeholder="ft" class="form-control" required smart-float>
+                                    <span class="input-group-addon">ft</span>
+                                    <input type="number" min="0" max="220" step="0.1" ng-model="body_data.height_inches" placeholder="in" class="form-control" required smart-float>
+                                    <span class="input-group-addon">in</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-6 control-label">Age</label>
+                                    <div class="col-md-6 input-group">
+                                    <input type="number" min="1" max="100" integer ng-model="body_data.age" placeholder="age" class="form-control error" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-6 control-label" ng-class="bmr.current_method_id==0 && ' ' || 'text-muted'">Gender</label>
+                                    <div class="col-md-6 input-group">
+                                    <input type="radio" ng-model="body_data.gender" value="m"> Male
+                                    <input type="radio" ng-model="body_data.gender" value="f"> Female
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-show="bmr.current_method_id==1">
+                                <div class="form-group">
+                                    <label class="col-md-6 control-label">Fat percentage<a href="http://en.wikipedia.org/wiki/Body_fat_percentage" target="_blank">[3]</a></label>
+                                    <div class="col-md-6 input-group">
+                                    <input type="text" ng-model="body_data.bfp" placeholder="в %" class="form-control" smart-float>
+                                    <span class="input-group-addon">%</span>
+                                    </div>
+                                    <div class="description" ng-show>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-show="bmr.current_method_id==2">
+                                <div class="form-group">
+                                    <label class="col-md-6 control-label">Custom cals</label>
+                                    <div class="col-md-6 input-group">
+                                    <input type="number" integer min="1" ng-model="results.tdee" class="form-control">
+                                    <span class="input-group-addon">kcal</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div <div ng-show="(bmr.current_method_id==0)||(bmr.current_method_id==1)">
+                                <hr>
+                                <div class="form-group">
+                                    <label class="col-md-6 control-label">Activity multiplier<a href="http://en.wikipedia.org/wiki/Physical_activity_level" target="_blank">[2]</a></label>
+                                    <div class="col-md-6 input-group">
+                                    <select type="text" ng-model="body_data.activity" ng-options="activity.name for activity in body_data.activity_options" class="form-control"></select>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div ng-show="(results.tdee)">
+                            <h2>Results: <span>{{ results.tdee | number:0 }} kcal</span></h2>
+                            <div ng-show="results.bmr">
+                                <h4>Basal metabolic rate: <span>{{ results.bmr | number:0 }} kcal</span></h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row">
+                        </div>
+                    </div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+            <div class="row">
+                <h3>Descriptions:</h3>
+                <div class="col-md-12">
+                    <div class="description">
+                        <h4>Activity Multiplier</h4>
+                        <ul>
+                            <li ng-repeat="activity in body_data.activity_options">
+                            <span>{{ activity.name }}</span>:
+                            {{ activity.description }} x{{ activity.mul}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,89 @@
+<div ng-controller="StrEstimationCtrl">
+    <div class="row">
+        <div class="col-md-5">
+            <form class="form-horizontal" role="form" name="bodyForm">
+            <div class="form-group">
+                <label class="col-md-6 control-label">System of measurement</label>
+                <div class="col-md-6 input-group">
+                <select type="text" ng-model="systemOfMeasurement" class="form-control">
+                    <option value="metric">Metric(kg)</option>
+                    <option value="imperial">Imperial(lbs)</option>
+                </select>
+                </div>
+            </div>
+
+            <div class="form-group" ng-show="systemOfMeasurement=='metric'">
+                <label class="col-md-6 control-label">Your weight</label>
+                <div class="col-md-6 input-group">
+                    <input type="number" step="0.1" min="1" max="250" ng-model="body_data.weight" placeholder="kg" class="form-control" required smart-float>
+                    <span class="input-group-addon">kg</span>
+                </div>
+            </div>
+            <div class="form-group" ng-show="systemOfMeasurement=='imperial'">
+                <label class="col-md-6 control-label">Your weight</label>
+                <div class="col-md-6 input-group">
+                    <input type="number" step="0.1" min="1" max="450" ng-model="body_data.weight_lbs" placeholder="lbs" class="form-control" required smart-float>
+                    <span class="input-group-addon">lbs</span>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+        <div ng-repeat="exercise in exercises">
+            <div class="row">
+                <div class="col-md-2">
+                    <b>{{ exercise.name}}</b>
+                </div>
+                <div class="col-md-9">
+                     <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">weight</label>
+                            <div class="col-md-3 input-group">
+                                <input type="number" step="0.1" min="1" max="1450" ng-model="exercise.weight" placeholder="lbs" class="form-control" required smart-float>
+                                <span class="input-group-addon">lbs</span>
+                                </div>
+                            <label class="col-md-2 control-label">reps</label>
+                            <div class="col-md-3 input-group">
+                                <input type="number" min="1" max="100" ng-model="exercise.reps" placeholder="reps" class="form-control" required integer>
+                                <span class="input-group-addon">reps</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row" ng-show="exercise.rm">
+                <b>One rep max: {{ exercise.rm}}<span ng-if="systemOfMeasurement=='metric'">kg</span><span ng-if="systemOfMeasurement=='imperial'">lbs</span></b>
+                <div class="progress">
+                  <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: {{ exercise.rm}}%"></div>
+                    <div style="position:relative;font-family:Arial;color:#555;"><span class="marker" style="left:0%;position:absolute;margin-left:1px;"><center>Untrained(<span class="grades">109 lbs</span>)</center></span><span class="marker" style="left:25%;position:absolute;margin-left:-25px"><center>Novice(<span class="grades">141 lbs</span>)</center></span><span class="marker" style="left:50%;position:absolute;margin-left:-43px"><center>Intermediate(<span class="grades">173 lbs</span>)</center></span><span class="marker" style="left:75%;position:absolute;margin-left:-35px"><center>Advanced(<span class="grades">236 lbs</span>)</center></span><span class="marker" style="left:100%;position:absolute;margin-left:-103px;width:90px"><center>Elite(<span class="grades">295 lbs</span>)</center></span></div>
+                  
+                </div>
+            </div>
+            <br>
+            <br>
+            <
+            <div class="row">
+            <div class="col-lg-12">
+            <div id="bpBar" style="padding-left: 30px; padding-right: 30px;">
+                <span class="subtitle">One Rep Max: {{ exercise.rm}}</span><br>
+                <table style="width:100%">
+                    <tbody>
+                    <tr>
+                        <td><div class="barBg"><div class="label" id="lab">188 lbs</div><div class="divider" style="left:25%">&nbsp;</div><div class="divider" style="left:50%">&nbsp;</div><div class="divider" style="left:75%">&nbsp;</div><div class="bar" style="width: 55.81147443940318%;">&nbsp;</div></div></td>
+                    </tr>
+                    <tr>
+                        <td><div style="position:relative;font-family:Arial;color:#555;"><span class="marker" style="left:0%;position:absolute;margin-left:-32px;"><center>Untrained<br>(<span class="grades">109 lbs</span>)</center></span><span class="marker" style="left:25%;position:absolute;margin-left:-25px"><center>Novice<br>(<span class="grades">141 lbs</span>)</center></span><span class="marker" style="left:50%;position:absolute;margin-left:-43px"><center>Intermediate<br>(<span class="grades">173 lbs</span>)</center></span><span class="marker" style="left:75%;position:absolute;margin-left:-35px"><center>Advanced<br>(<span class="grades">236 lbs</span>)</center></span><span class="marker" style="left:100%;position:absolute;margin-left:-50px;width:90px"><center>Elite<br>(<span class="grades">295 lbs</span>)</center></span></div></td>
+                    </tr>
+                    </tbody>
+                </table><br><br>
+            </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    {{ exercises}}
+</div>
